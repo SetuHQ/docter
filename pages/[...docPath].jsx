@@ -4,7 +4,7 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 
 //  Internal deps  ============================================================
-import { Row, Portion, Button, Element, Spinner } from "fictoan-react";
+import { Row, Portion, Element, Spinner } from "fictoan-react";
 
 //  Local components  =========================================================
 import APIReference from "../components/APIReference/APIReference";
@@ -26,18 +26,7 @@ import redirects from "../content/redirects.json";
 
 //  Types  ====================================================================
 
-const DocPath = ({
-    docPath,
-    docsDefaultLayout,
-    currentTheme,
-    linkToOpen,
-    endpoints,
-    setLinkToOpen,
-    mdx,
-    pageDetails,
-    raw,
-    fourOhFour,
-}) => {
+const DocPath = ({ docsDefaultLayout, currentTheme, linkToOpen, endpoints, mdx, pageDetails, raw, fourOhFour }) => {
     const router = useRouter();
     const [childOnChangeMethod, setChildOnChangeMethod] = useState(() => () => null);
 

@@ -1,15 +1,14 @@
 //  External deps  ============================================================
 import React from "react";
 import Head from "next/head";
-import Link from "next/link";
 
 //  Internal deps  ============================================================
-import { Button, Card, Element, Heading, HRule, Portion, Row, Text } from "fictoan-react";
+import { Card, Heading, Portion, Row, Text } from "fictoan-react";
 
 //  Local components  =========================================================
 import { HomeStyled } from "../styles/Home.styled";
 
-const Home = (props) => {
+const Home = () => {
     return (
         <HomeStyled>
             <Head>
