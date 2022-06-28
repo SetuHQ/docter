@@ -1,0 +1,10 @@
+assets/
+build/
+coverage/
+styles/
+*.strings.js
+*.styled.jsx
+*.styles.tsx
+*.css
+*.log
+yarn.lock

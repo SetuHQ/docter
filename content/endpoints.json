@@ -1,0 +1,52 @@
+{
+    "home": [
+        {
+            "name": "Category 1",
+            "path": "category1",
+            "order": 0,
+            "visible_in_sidebar": true,
+            "children": [
+                {
+                    "name": "Product 1",
+                    "path": "product1",
+                    "order": 0,
+                    "visible_in_sidebar": true
+                },
+                {
+                    "name": "Product 2",
+                    "path": "product2",
+                    "order": 1,
+                    "visible_in_sidebar": true
+                }
+            ]
+        },
+        {
+            "name": "Category 2",
+            "path": "category2",
+            "order": 1,
+            "visible_in_sidebar": true,
+            "children": [
+                {
+                    "name": "Product 3",
+                    "path": "product3",
+                    "order": 0,
+                    "visible_in_sidebar": true
+                }
+            ]
+        },
+        {
+            "name": "Sample Category",
+            "path": "sample-category",
+            "order": 2,
+            "visible_in_sidebar": false,
+            "children": [
+                {
+                    "name": "Sample Product",
+                    "path": "sample-product",
+                    "order": 0,
+                    "visible_in_sidebar": false
+                }
+            ]
+        }
+    ]
+}
