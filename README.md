@@ -37,8 +37,10 @@ Open your terminal and navigate to a folder where you want to clone this reposit
 
 #### Step 2: Run docs locally
 
--   Install dependencies with `yarn install` or `npm install`
--   Run the app with `yarn dev` or `npm run dev`
+Recommend using `yarn` over `npm`
+
+-   Install dependencies with `yarn install`
+-   Run the app with `yarn dev`
 
 You should be able to see docs local version at `http://localhost:3000`
 
@@ -197,12 +199,12 @@ List of all components and their usage can be found by visiting http://localhost
 
 # Folder Structure
 
-All MDX files are in a folder `setu-cms` in the root of the project.
+All MDX files are in a folder `content` in the root of the project.
 
     .
     ├── pages
     ├── public
-    ├── setu-cms
+    ├── content
     ├── components
     ├── .
     ├── .
@@ -210,7 +212,7 @@ All MDX files are in a folder `setu-cms` in the root of the project.
 
 `NOTE : All folders/files should be named after path name they point to.`
 
-Inside `setu-cms` folder,
+Inside `content` folder,
 
 -   `endpoints.json` which contains the structure of docs home-page sidebar.
 -   `redirects.json` which contains key-value pairs of routes/path with their redirects URLs
@@ -218,7 +220,7 @@ Inside `setu-cms` folder,
 
         .
         ├── ...
-        ├── setu-cms
+        ├── content
         │ ├── categories
         │ | ├── payments # Contains MDX files for Payments products
         | | ├── data # Contains MDX files for Data products
