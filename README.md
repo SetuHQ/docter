@@ -1,4 +1,4 @@
-# Lightyear
+# Docter
 
 Open-source template of Setu Docs
 
