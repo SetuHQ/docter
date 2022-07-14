@@ -33,7 +33,7 @@ If you know these, you can go ahead and set up. Otherwise, ask someone from Deve
 
 Open your terminal and navigate to a folder where you want to clone this repository, such as `Documents`. Run this command.
 
-`git clone https://github.com/SetuHQ/setu-docs-starter.git`
+`git clone https://github.com/SetuHQ/docter.git`
 
 #### Step 2: Run docs locally
 
@@ -87,9 +87,16 @@ visible_in_sidebar: true
 ---
 ```
 
+`sidebar_title` describes the name to be displayed in the sidebar
+`page_title` describes the title of the page
+`order` describes order in which this MDX file should be displayed
+`visible_in_sidebar` describes whether this item should be displayed in the sidebar or not
+
+Please note, all the above paramaters are required in front-matter
+
 **Only for API reference pages—**
 
--   If the API reference is coming from YAML files, we need to add a new field inside the frontmatter
+-   If the API reference is in JSON format, we need to add a new field inside the frontmatter
 
 ```
 ---
@@ -101,7 +108,9 @@ api_reference : "<API reference in JSON format>"
 ---
 ```
 
--   If the API reference is via Postman collection, you can add an entry in `redirect.json` to redirect to the Postman collection URL
+> Please note, `api_reference` is an optional field and can be used only to display API references. We use Redoc component to render the API specifications
+
+-   If the API reference is via Postman collection, you can add an entry in `redirects.json` to redirect to the Postman collection URL
 
 #### Actual content
 
@@ -120,7 +129,8 @@ And this is a paragraph text
 
 Let's start with an example. We will—
 
--   Create a **product category** with name `Test category` and path `test-category`
+-   Create a **single page** with name `Introduction` and path `introduction`
+-   Create a **category** with name `Test category` and path `test-category`
 -   Create two **products**
     -   Name `Test product 1`, path `test-product-1`
     -   Name `Test product 2`, path `test-product-2`
@@ -128,9 +138,23 @@ Let's start with an example. We will—
 
 ---
 
-### Create a product category
+### Create a single page
 
-Create a new folder with name, 'test-category' in `categories` folder.
+Create a MDX file with name, 'introduction.mdx' in `content` folder.
+
+Add frontmatter and content into the Introduction page
+
+---
+
+### Create a category
+
+Create a new folder with name, 'test-category' in `content` folder.
+
+Create an `index.mdx` file inside `test-category` with details of the category in front-matter.
+
+> **Very Important**
+>
+> You should always have an `index.mdx` file inside all the folders that you create in `content`
 
 ---
 
@@ -140,35 +164,9 @@ Create two new folders with names `test-product-1` and `test-prodcut-2` inside `
 
 ---
 
-### Add an entry in endpoints.json
-
-For the product category and the new products just created above, add a new object in the `endpoints.json` like this,
-
-```
-{
-      "name": "Test category",
-      "path": "test-category",
-      "order": 4,
-      "visible_in_sidebar": true,
-      "children":
-      [
-        {
-          "name": "Test product 1",
-          "path": "test-product-1",
-          "order": 0,
-          "visible_in_sidebar": true
-        },
-        {
-          "name": "Test product 2",
-          "path": "test-product-2",
-          "order": 1,
-          "visible_in_sidebar": true
-        }
-      ]
-  }
-```
-
 ### Add some content
+
+Create an `index.mdx` file inside `test-product-1` with details of the product in front-matter.
 
 Create a file `overview.mdx` inside `test-product-1` and add some sample content like this—
 
@@ -185,10 +183,13 @@ And this is a paragraph text
 - And a bullet point, **in bold**
 ```
 
-Create a similar `mdx` file inside `test-product-2` and we are done!
+Create similar `mdx` files inside `test-product-2` and we are done!
 
 <br />
-<br />
+
+You can find the exact content in the repo described in the example.
+
+<br>
 
 # Using React components in MDX files
 
@@ -196,112 +197,6 @@ List of all components and their usage can be found by visiting http://localhost
 
 <br />
 <br />
-
-# Folder Structure
-
-All MDX files are in a folder `content` in the root of the project.
-
-    .
-    ├── pages
-    ├── public
-    ├── content
-    ├── components
-    ├── .
-    ├── .
-    └── README.md
-
-`NOTE : All folders/files should be named after path name they point to.`
-
-Inside `content` folder,
-
--   `endpoints.json` which contains the structure of docs home-page sidebar.
--   `redirects.json` which contains key-value pairs of routes/path with their redirects URLs
--   `categories` folder which contains individual folders for products in that category. Categories include Payments, Data, Investments, Dev Tools currently.
-
-        .
-        ├── ...
-        ├── content
-        │ ├── categories
-        │ | ├── payments # Contains MDX files for Payments products
-        | | ├── data # Contains MDX files for Data products
-        | | ├── investments # Contains MDX files for Investments products
-        | | └── dev-tools # Contains MDX files for Dev Tools products
-        | ├── redirects.json # key-value pairs of path redirects
-        │ └── endpoints.json # Structure of home-page sidebar
-        └── ...
-
-`endpoints.json` structure
-
-```
-{
-  "home": [
-    {
-      "name": "<CATEGORY_NAME>",
-      "path": "<CATEGORY_PATH>",
-      "order": 0, // interger - defines order in which it is shown in the sidebar
-      "visible_in_sidebar": true, // values can be true/false
-      "children": [
-        {
-          "name": <PRODUCT_NAME>,
-          "path": "<PRODUCT_PATH>",
-          "order": 0, // interger - defines order in which it is shown in the sidebar
-          "visible_in_sidebar": true // values can be true/false
-        },
-        ...
-      ]
-    },
-    ...
-    ]
-}
-```
-
-`redirects.json` structure
-
-```
-{
-   "<URL>" : "<REDIRECT_URL>", // Redirect URL to REDIRECT_URL,
-   ...
-}
-```
-
-`categories` folder
-
-Each folder in `categories` will have sub-folders representing products in that category named after their paths.
-
-    .
-    ├── ...
-    ├── payments
-    │   ├── bbps
-    │   ├── bav
-    │   ├── upi-deeplink
-    │   └── ...
-    ├── data
-    │   ├── pan
-    │   ├── okyc
-    │   ├── account-aggregator
-    │   └── ...
-    ├── investments
-    │   └── deposits
-    ├── dev-tools
-    │   └── bridge
-    └── ...
-
-Each product folder will have MDX files for it's pages. The names of pages should be same as their paths. If a page has sub-pages (sub-navs), we need to create a folder along with it's MDX file.
-
-    .
-    ├── ...
-    ├── dev-tools
-    │   ├── bridge
-    │       ├── overview.mdx                 # Overview page with route dev-tools/bridge/overview
-    │       ├── reports.mdx                  # Reports page with route dev-tools/bridge/reports
-    │       ├── org-settings.mdx             # Org- settings page with route dev-tools/bridge/org-settings
-    │       └── org-settings                 # org-settings folder to create sub-pages
-    │           ├── api-keys.mdx             # API keys page with route dev-tools/bridge/org-settings/api-keys
-    │           ├── people.mdx               # People page with route dev-tools/bridge/org-settings/people
-    │           └── api-keys                 # api-keys folder to create sub-pages
-    │               ├── oauth.mdx            # OAuth page with route dev-tools/bridge/org-settings/api-keys/oauth
-    │               └── jwt.mdx              # JWT page with route dev-tools/bridge/org-settings/api-keys/jwt
-    └── ...
 
 ## License
 

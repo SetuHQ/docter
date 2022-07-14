@@ -1,0 +1,26 @@
+content
+    home.mdx
+    test.mdx
+    individual.mdx
+    finance
+      index.mdx
+      payments
+          index.mdx
+          bbps
+              index.mdx
+              overview.mdx
+              ...
+          billpay
+              index.mdx
+              structure.mdx
+              structure
+      data
+          index.mdx
+          esign
+              index.mdx
+              overview.mdx
+              ...
+          pan
+              index.mdx
+      investments
+          index.mdx

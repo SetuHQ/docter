@@ -106,9 +106,9 @@ export async function getStaticPaths() {
 
     if (process.env.NEXT_PUBLIC_NODE_ENV === "development") {
         let endpoints = await cmsService.cms();
-        endpointsDirectory = endpoints["home"];
+        endpointsDirectory = endpoints["sidebar"];
     } else {
-        endpointsDirectory = menuItems["home"];
+        endpointsDirectory = menuItems["sidebar"];
     }
 
     // const paths = generatePaths(endpointsDirectory);
@@ -127,9 +127,9 @@ export async function getStaticProps({ params }) {
     let redirectToSlug;
     if (process.env.NEXT_PUBLIC_NODE_ENV === "development") {
         let endpoints = await cmsService.cms();
-        endpointsDirectory = endpoints["home"];
+        endpointsDirectory = endpoints["sidebar"];
     } else {
-        endpointsDirectory = menuItems["home"];
+        endpointsDirectory = menuItems["sidebar"];
     }
 
     let redirectPath = "/" + docPath.join("/");
@@ -158,7 +158,7 @@ export async function getStaticProps({ params }) {
     }
 
     try {
-        markdownwithMeta = fs.readFileSync(path.join("./content/categories/" + docPath.join("/") + ".mdx"), "utf-8");
+        markdownwithMeta = fs.readFileSync(path.join("./content/" + docPath.join("/") + ".mdx"), "utf-8");
     } catch (e) {
         markdownwithMeta = "";
     }

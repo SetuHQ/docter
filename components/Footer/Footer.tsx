@@ -47,21 +47,34 @@ const Footer = ({ endpoints }) => {
                         {Object.keys(categories).length === 0 ? (
                             <Spinner marginTop="medium"></Spinner>
                         ) : (
-                            Object.keys(categories).map((categoryName, i) => (
-                                <Element as="div" className="footer-section" key={i}>
-                                    <Text size="small" margin="none" textColour="teal">
-                                        {categoryName.toUpperCase()}
-                                    </Text>
-                                    {categories[categoryName]["children"].map(
-                                        (product, j) =>
-                                            product.visible_in_sidebar && (
-                                                <Link href={categories[categoryName].path + "/" + product.path} key={j}>
-                                                    {product.name}
-                                                </Link>
-                                            )
-                                    )}
-                                </Element>
-                            ))
+                            Object.keys(categories).map((categoryName, i) =>
+                                categories[categoryName]["children"] ? (
+                                    <Element as="div" className="footer-section" key={i}>
+                                        <Text size="small" margin="none" textColour="teal">
+                                            {categoryName.toUpperCase()}
+                                        </Text>
+                                        {categories[categoryName]["children"].map(
+                                            (product, j) =>
+                                                product.visible_in_sidebar && (
+                                                    <Link
+                                                        href={categories[categoryName].path + "/" + product.path}
+                                                        key={j}
+                                                    >
+                                                        {product.name}
+                                                    </Link>
+                                                )
+                                        )}
+                                    </Element>
+                                ) : (
+                                    <Element as="div" className="footer-section" key={i}>
+                                        <Link
+                                            href={categories[categoryName].path + "/" + categories[categoryName].path}
+                                        >
+                                            {categories[categoryName].name}
+                                        </Link>
+                                    </Element>
+                                )
+                            )
                         )}
                     </Portion>
 

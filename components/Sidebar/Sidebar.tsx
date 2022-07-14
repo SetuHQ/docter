@@ -14,7 +14,10 @@ import {
     SidebarItemText,
     SidebarWrapper,
     Spinner,
+    NotificationsWrapper,
 } from "fictoan-react";
+
+import Callout from "../InjectableComponents/Callout/Callout";
 
 //  Types  ====================================================================
 //  Local components  =========================================================
@@ -29,7 +32,7 @@ import HomeIcon from "../../assets/icons/home.svg";
 import BackIcon from "../../assets/icons/back.svg";
 import ProductIcon from "../../assets/icons/product.svg";
 import ThemeIcon from "../../assets/icons/theme.svg";
-import { SSL_OP_DONT_INSERT_EMPTY_FRAGMENTS } from "constants";
+
 export const Sidebar = ({
     currentTheme,
     toggleTheme,
@@ -70,7 +73,7 @@ export const Sidebar = ({
         }
     }, [router.asPath]);
 
-    const onNavClick = (e, slug) => {
+    const onNavClick = (e, slug, hasChildren) => {
         console.log("Slug", slug);
         // To prevent linkset change while opening in a new tab using Ctrl/Cmd + click
         if (e.ctrlKey || e.metaKey) {
@@ -84,7 +87,7 @@ export const Sidebar = ({
         ////////////////////////////////////////////////////////////
 
         setLinkToOpen(slug);
-        if (activeLinkset !== "linkset-2") {
+        if (activeLinkset !== "linkset-2" && hasChildren) {
             setLinkset2Navs(generateNavs(endpoints, slug));
             setActiveLinkset("linkset-2");
         }
@@ -93,11 +96,7 @@ export const Sidebar = ({
 
     const getIcon = (iconName) => {
         switch (iconName) {
-            case "PRODUCT1":
-                return <ProductIcon />;
-            case "PRODUCT2":
-                return <ProductIcon />;
-            case "PRODUCT3":
+            default:
                 return <ProductIcon />;
         }
     };
@@ -158,7 +157,7 @@ export const Sidebar = ({
                                 paddingLeft: level * 15 + "px",
                                 gridTemplateRows: 40 - level * 5 + "px",
                             }}
-                            onClick={(e) => (isAPIReference ? null : onNavClick(e, slug + "/" + product.path))}
+                            onClick={(e) => (isAPIReference ? null : onNavClick(e, slug + "/" + product.path, true))}
                         >
                             <SidebarItemIcon iconType="stroked" />
                             <SidebarItemText
@@ -204,14 +203,16 @@ export const Sidebar = ({
 
         for (let category of directory) {
             if (category.path === segments[1]) {
-                for (let product of category.children) {
-                    if (product.path === segments[2]) {
-                        let output = [];
-                        output.push(createSidebarItem(product, segments.join("/"), 0, "product"));
-                        for (let page of product.children) {
-                            output.push(generateNavsHelper(page, segments.join("/"), 0));
+                if (category.children) {
+                    for (let product of category.children) {
+                        if (product.path === segments[2]) {
+                            let output = [];
+                            output.push(createSidebarItem(product, segments.join("/"), 0, "product"));
+                            for (let page of product.children) {
+                                output.push(generateNavsHelper(page, segments.join("/"), 0));
+                            }
+                            return output;
                         }
-                        return output;
                     }
                 }
             }
@@ -247,32 +248,33 @@ export const Sidebar = ({
                     {/* <> */}
                     <Element as="div" id="linkset-1" className="linkset">
                         {endpoints.map((category) => {
-                            return (
-                                category["visible_in_sidebar"] && (
-                                    <Element
-                                        as="div"
-                                        key={category["name"]}
-                                        style={{
-                                            order: category["order"],
-                                        }}
-                                    >
-                                        <ExpandableContent
-                                            open
-                                            summary={
-                                                <SidebarItem>
-                                                    <SidebarItemIcon iconType="stroked" />
-                                                    <SidebarItemText
-                                                        className="sidebar-item-text"
-                                                        weight="600"
-                                                        linkText={category["name"]}
-                                                    />
-                                                </SidebarItem>
-                                            }
-                                        >
-                                            <Element as="div" className="sub-navs-open">
-                                                {category["children"].map((product, j) => {
-                                                    return (
-                                                        product["visible_in_sidebar"] && (
+                            return category["visible_in_sidebar"] && category["visible_in_sidebar"] !== undefined ? (
+                                <Element
+                                    as="div"
+                                    key={category["name"]}
+                                    style={{
+                                        order: category["order"],
+                                    }}
+                                >
+                                    {category["children"] ? (
+                                        <>
+                                            <ExpandableContent
+                                                open
+                                                summary={
+                                                    <SidebarItem>
+                                                        <SidebarItemIcon iconType="stroked" />
+                                                        <SidebarItemText
+                                                            className="sidebar-item-text"
+                                                            weight="600"
+                                                            linkText={category["name"]}
+                                                        />
+                                                    </SidebarItem>
+                                                }
+                                            >
+                                                <Element as="div" className="sub-navs-open">
+                                                    {category["children"].map((product, j) => {
+                                                        return product["visible_in_sidebar"] &&
+                                                            product["visible_in_sidebar"] !== undefined ? (
                                                             <NavLink
                                                                 href={
                                                                     isNavExpanded(router.asPath, product["path"])
@@ -300,7 +302,8 @@ export const Sidebar = ({
                                                                                 : "/" +
                                                                                       category["path"] +
                                                                                       "/" +
-                                                                                      product["path"]
+                                                                                      product["path"],
+                                                                            true
                                                                         )
                                                                     }
                                                                 >
@@ -314,15 +317,65 @@ export const Sidebar = ({
                                                                     />
                                                                 </SidebarItem>
                                                             </NavLink>
-                                                        )
-                                                    );
-                                                })}
-                                            </Element>
-                                        </ExpandableContent>
+                                                        ) : (
+                                                            <>
+                                                                <Spinner marginTop="medium"></Spinner>
+                                                                <NotificationsWrapper anchor="top" position="right">
+                                                                    <Callout type="error">
+                                                                        Something went wrong. Please check console.
+                                                                    </Callout>
+                                                                </NotificationsWrapper>
+                                                            </>
+                                                        );
+                                                    })}
+                                                </Element>
+                                            </ExpandableContent>
 
-                                        <HRule kind="tertiary" marginTop="nano" marginBottom="nano" />
-                                    </Element>
-                                )
+                                            <HRule kind="tertiary" marginTop="nano" marginBottom="nano" />
+                                        </>
+                                    ) : (
+                                        <NavLink
+                                            href={
+                                                isNavExpanded(router.asPath, category["path"])
+                                                    ? router.asPath
+                                                    : "/" + category["path"]
+                                            }
+                                            key={category["name"]}
+                                            newTab={openInNewTab.includes(category["path"])} // Hack //
+                                            style={{
+                                                order: category["order"],
+                                            }}
+                                        >
+                                            <SidebarItem
+                                                onClick={(e) =>
+                                                    onNavClick(
+                                                        e,
+                                                        isNavExpanded(router.asPath, "/" + category["path"])
+                                                            ? router.asPath
+                                                            : "/" + category["path"],
+                                                        false
+                                                    )
+                                                }
+                                            >
+                                                <SidebarItemIcon iconType="stroked">
+                                                    {getIcon(category["path"].toUpperCase())}
+                                                </SidebarItemIcon>
+                                                <SidebarItemText
+                                                    className="sidebar-item-text"
+                                                    weight="400"
+                                                    linkText={category.name}
+                                                />
+                                            </SidebarItem>
+                                        </NavLink>
+                                    )}
+                                </Element>
+                            ) : (
+                                <>
+                                    <Spinner marginTop="medium"></Spinner>
+                                    <NotificationsWrapper anchor="top" position="right">
+                                        <Callout type="error">Something went wrong. Please check console.</Callout>
+                                    </NotificationsWrapper>
+                                </>
                             );
                         })}
                     </Element>

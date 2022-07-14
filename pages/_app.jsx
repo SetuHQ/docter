@@ -46,13 +46,13 @@ function MyApp({ Component, pageProps }) {
             cmsService
                 .cms()
                 .then((data) => {
-                    setEndpoints(data["home"]);
+                    setEndpoints(data["sidebar"]);
                 })
                 .catch((error) => {
                     console.log(error);
                 });
         } else {
-            setEndpoints(home_endpoints["home"]);
+            setEndpoints(home_endpoints["sidebar"]);
         }
 
         return () => {
@@ -139,7 +139,7 @@ function MyApp({ Component, pageProps }) {
                         {/* Only visible on viewport width < 900px */}
                         <MobileHeader currentTheme={currentTheme} toggleSidebarVisibility={toggleSidebarVisibility} />
 
-                        <Header endpoints={endpoints} />
+                        {/* <Header endpoints={endpoints} /> */}
 
                         <Component {...modifiedPageProps} />
 
