@@ -21,7 +21,7 @@ Open-source template of Setu Docs
 
 -   VS Code
 -   Git
--   Node v14 only
+-   node v14 or above
 
 If you know these, you can go ahead and set up. Otherwise, ask someone from Developer relations or the Design team for help.
 
