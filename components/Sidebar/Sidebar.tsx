@@ -61,7 +61,7 @@ export const Sidebar = ({
 
     useEffect(() => {
         setLinkToOpen(router.asPath);
-        if (router.asPath.split("/").slice(1).length < 2) {
+        if (router.asPath.split("/").slice(1).length <= 2) {
             setActiveLinkset("linkset-1");
         } else {
             if (linkToOpen != router.asPath) {
@@ -204,12 +204,16 @@ export const Sidebar = ({
         for (let category of directory) {
             if (category.path === segments[1]) {
                 if (category.children) {
+                    console.log(category.children);
                     for (let product of category.children) {
                         if (product.path === segments[2]) {
+                            console.log(product.path);
                             let output = [];
                             output.push(createSidebarItem(product, segments.join("/"), 0, "product"));
-                            for (let page of product.children) {
-                                output.push(generateNavsHelper(page, segments.join("/"), 0));
+                            if (product.children) {
+                                for (let page of product.children) {
+                                    output.push(generateNavsHelper(page, segments.join("/"), 0));
+                                }
                             }
                             return output;
                         }
@@ -230,14 +234,14 @@ export const Sidebar = ({
             </SidebarHeader>
 
             {/*  HOME  ==================================================  */}
-            <NavLink href="/" exact>
+            {/* <NavLink href="/" exact>
                 <SidebarItem onClick={() => setActiveLinkset("linkset-1")}>
                     <SidebarItemIcon iconType="stroked">
                         <HomeIcon />
                     </SidebarItemIcon>
                     <SidebarItemText className="sidebar-item-text" weight="400" linkText="Home" />
                 </SidebarItem>
-            </NavLink>
+            </NavLink>*/}
 
             <HRule kind="secondary" marginTop="nano" marginBottom="nano" />
 
@@ -248,7 +252,7 @@ export const Sidebar = ({
                     {/* <> */}
                     <Element as="div" id="linkset-1" className="linkset">
                         {endpoints.map((category) => {
-                            return category["visible_in_sidebar"] && category["visible_in_sidebar"] !== undefined ? (
+                            return category["visible_in_sidebar"] ? (
                                 <Element
                                     as="div"
                                     key={category["name"]}
@@ -258,23 +262,22 @@ export const Sidebar = ({
                                 >
                                     {category["children"] ? (
                                         <>
-                                            <ExpandableContent
-                                                open
-                                                summary={
-                                                    <SidebarItem>
-                                                        <SidebarItemIcon iconType="stroked" />
-                                                        <SidebarItemText
-                                                            className="sidebar-item-text"
-                                                            weight="600"
-                                                            linkText={category["name"]}
-                                                        />
-                                                    </SidebarItem>
-                                                }
-                                            >
+                                            <Element as="div" marginTop="micro" marginBottom="none" />
+                                            <>
+                                                <SidebarItem>
+                                                    <SidebarItemIcon iconType="stroked" />
+                                                    <SidebarItemText
+                                                        className="sidebar-item-text"
+                                                        weight="600"
+                                                        textColour="slate-60"
+                                                        size="medium"
+                                                        linkText={category["name"]}
+                                                    />
+                                                </SidebarItem>
+
                                                 <Element as="div" className="sub-navs-open">
                                                     {category["children"].map((product, j) => {
-                                                        return product["visible_in_sidebar"] &&
-                                                            product["visible_in_sidebar"] !== undefined ? (
+                                                        return product["visible_in_sidebar"] ? (
                                                             <NavLink
                                                                 href={
                                                                     isNavExpanded(router.asPath, product["path"])
@@ -303,7 +306,7 @@ export const Sidebar = ({
                                                                                       category["path"] +
                                                                                       "/" +
                                                                                       product["path"],
-                                                                            true
+                                                                            product["children"]
                                                                         )
                                                                     }
                                                                 >
@@ -317,7 +320,7 @@ export const Sidebar = ({
                                                                     />
                                                                 </SidebarItem>
                                                             </NavLink>
-                                                        ) : (
+                                                        ) : product["visible_in_sidebar"] === undefined ? (
                                                             <>
                                                                 <Spinner marginTop="medium"></Spinner>
                                                                 <NotificationsWrapper anchor="top" position="right">
@@ -326,12 +329,11 @@ export const Sidebar = ({
                                                                     </Callout>
                                                                 </NotificationsWrapper>
                                                             </>
-                                                        );
+                                                        ) : null;
                                                     })}
                                                 </Element>
-                                            </ExpandableContent>
-
-                                            <HRule kind="tertiary" marginTop="nano" marginBottom="nano" />
+                                            </>
+                                            <Element as="div" marginTop="none" marginBottom="micro" />
                                         </>
                                     ) : (
                                         <NavLink
@@ -369,14 +371,14 @@ export const Sidebar = ({
                                         </NavLink>
                                     )}
                                 </Element>
-                            ) : (
+                            ) : category["visible_in_sidebar"] === undefined ? (
                                 <>
                                     <Spinner marginTop="medium"></Spinner>
                                     <NotificationsWrapper anchor="top" position="right">
                                         <Callout type="error">Something went wrong. Please check console.</Callout>
                                     </NotificationsWrapper>
                                 </>
-                            );
+                            ) : null;
                         })}
                     </Element>
 

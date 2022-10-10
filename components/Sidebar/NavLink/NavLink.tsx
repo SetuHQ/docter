@@ -18,6 +18,7 @@ export const isExpanded = (routerPath, slug) => {
 };
 
 const NavLink = ({ href, children, className = "", style = {}, exact = false, newTab = false }) => {
+    console.log(href);
     const router = useRouter();
 
     const isActive = (slug) => {

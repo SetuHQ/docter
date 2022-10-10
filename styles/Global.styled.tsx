@@ -104,8 +104,6 @@ export const GlobalStyle = createGlobalStyle`
                     flex-direction: column;
                 }
             }
-    
-            hr { margin : 8px 0; }
         }
     }
 
